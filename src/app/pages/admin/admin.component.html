@@ -1,0 +1,45 @@
+<!-- admin.component.html -->
+
+<h2>Panel de Administración</h2>
+
+<div id="map" style="height: 400px; margin-bottom: 20px;"></div>
+
+<p-table [value]="deliveries">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Status</th>
+      <th>Ubicación</th>
+      <th>Acción</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-delivery>
+    <tr>
+      <td>{{ delivery.id }}</td>
+      <td>{{ delivery.username }}</td>
+      <td>{{ delivery.status }}</td>
+      <td>{{ delivery.lat.toFixed(5) }}, {{ delivery.lng.toFixed(5) }}</td>
+      <td>
+        <button pButton label="Asignar paquete" (click)="openAssignModal(delivery)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Modal básica para asignar paquete -->
+<div class="modal-backdrop" *ngIf="modalVisible">
+  <div class="modal">
+    <h3>Asignar paquete a {{ selectedDelivery?.username }}</h3>
+
+    <label for="paquete-select">Selecciona paquete:</label>
+    <select id="paquete-select" [(ngModel)]="selectedPackageId">
+      <option *ngFor="let p of paquetesSinAsignar" [value]="p.id">{{ p.descripcion }}</option>
+    </select>
+
+    <div class="modal-buttons">
+      <button (click)="asignarPaquete()">Asignar</button>
+      <button (click)="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>

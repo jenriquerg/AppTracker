@@ -1,0 +1,39 @@
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  <form (ngSubmit)="onSubmit()">
+    <p-iftalabel class="p-field">
+      <label for="username">Usuario</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        [(ngModel)]="username"
+        pInputText
+        placeholder="Ingresa tu usuario"
+        required
+      />
+    </p-iftalabel>
+
+    <p-iftalabel class="p-field">
+      <p-password
+        name="password"
+        [(ngModel)]="password"
+        required
+        placeholder="Ingresa tu contraseña"
+        [feedback]="false"
+        [toggleMask]="true"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+      ></p-password>
+      <label for="password">Contraseña</label>
+    </p-iftalabel>
+
+    <p-button
+      label="Iniciar Sesión"
+      type="submit"
+      [disabled]="loading"
+    ></p-button>
+
+    <div *ngIf="error" style="color: red; margin-top: 1rem">{{ error }}</div>
+  </form>
+</div>

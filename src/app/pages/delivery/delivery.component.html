@@ -1,0 +1,12 @@
+<h2>Paquetes Asignados</h2>
+<div id="map" style="height: 400px; width: 100%;"></div>
+
+<div *ngIf="loading">Cargando...</div>
+
+<div *ngFor="let p of paquetes" class="paquete-card" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 8px;">
+  <p><strong>Dirección:</strong> {{ p.direccion_entrega }}</p>
+  <p><strong>Estado:</strong> {{ p.status }}</p>
+  <button (click)="cambiarEstado(p.id, 'en_transito')" [disabled]="p.status === 'en_transito'">En tránsito</button>
+  <button (click)="cambiarEstado(p.id, 'entregado')" [disabled]="p.status === 'entregado'">Entregado</button>
+  <button (click)="cambiarEstado(p.id, 'regresado')" [disabled]="p.status === 'regresado'">Regresado</button>
+</div>
