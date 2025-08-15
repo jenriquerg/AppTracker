@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  color: #000;
 }
 
 .modal {
@@ -16,6 +17,7 @@
   padding: 1.5rem;
   border-radius: 6px;
   width: 320px;
+  color: black;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -24,4 +26,51 @@
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+}
+
+/* Select estilizado dentro del modal */
+.modal select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1.5px solid #888;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #000;
+  transition: border-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.modal select:focus {
+  border-color: #6200ee;
+  outline: none;
+  box-shadow: 0 0 6px rgba(98, 0, 238, 0.5);
+}
+
+/* Botones del modal */
+.modal-buttons button {
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons button:first-child {
+  background-color: #6200ee;
+  color: white;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #4b00b5;
+}
+
+.modal-buttons button:last-child {
+  background-color: #ddd;
+  color: #333;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #bbb;
 }

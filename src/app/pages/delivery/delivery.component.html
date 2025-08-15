@@ -10,3 +10,5 @@
   <button (click)="cambiarEstado(p.id, 'entregado')" [disabled]="p.status === 'entregado'">Entregado</button>
   <button (click)="cambiarEstado(p.id, 'regresado')" [disabled]="p.status === 'regresado'">Regresado</button>
 </div>
+
+<button (click)="cerrarSesion()">Cerrar Sesión</button>

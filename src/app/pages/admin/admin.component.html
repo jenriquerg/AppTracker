@@ -21,7 +21,7 @@
       <td>{{ delivery.status }}</td>
       <td>{{ delivery.lat.toFixed(5) }}, {{ delivery.lng.toFixed(5) }}</td>
       <td>
-        <button pButton label="Asignar paquete" (click)="openAssignModal(delivery)"></button>
+        <button (click)="openAssignModal(delivery)"> Asignar Paquete </button>
       </td>
     </tr>
   </ng-template>
@@ -34,7 +34,7 @@
 
     <label for="paquete-select">Selecciona paquete:</label>
     <select id="paquete-select" [(ngModel)]="selectedPackageId">
-      <option *ngFor="let p of paquetesSinAsignar" [value]="p.id">{{ p.descripcion }}</option>
+      <option style="color: black;" *ngFor="let p of paquetesSinAsignar" [value]="p.id">{{ p.descripcion }}</option>
     </select>
 
     <div class="modal-buttons">
@@ -43,3 +43,5 @@
     </div>
   </div>
 </div>
+
+<button (click)="cerrarSesion()">Cerrar Sesión</button>

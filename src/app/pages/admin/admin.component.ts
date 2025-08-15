@@ -6,6 +6,8 @@ import { DeliveryService } from '../../core/services/delivery.service';
 import { PackageService } from '../../core/services/package.service';
 import { Delivery } from '../../core/models/delivery.model';
 import { TableModule } from 'primeng/table';
+import { AuthService } from '../../core/services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -30,7 +32,9 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private deliveryService: DeliveryService,
-    private packageService: PackageService
+    private packageService: PackageService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +46,8 @@ export class AdminComponent implements OnInit {
 
   initMap(): void {
     this.map = L.map('map', {
-      center: [20.6767, -103.3476], // México (por ejemplo)
-      zoom: 13,
+      center: [20.65967, -100.40111],
+      zoom: 14,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -108,5 +112,10 @@ export class AdminComponent implements OnInit {
     this.selectedDelivery = null;
     this.paquetesSinAsignar = [];
     this.selectedPackageId = null;
+  }
+
+  cerrarSesion() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
