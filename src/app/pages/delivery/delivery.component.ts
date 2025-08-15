@@ -5,6 +5,8 @@ import { TokenService } from '../../core/services/token.service';
 import { AuthService } from '../../core/services/auth.service';
 import * as L from 'leaflet';
 import * as socketIOClient from 'socket.io-client';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet/dist/leaflet.css';
 import {Router} from '@angular/router';
 
