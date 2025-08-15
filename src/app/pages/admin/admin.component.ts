@@ -7,7 +7,7 @@ import { PackageService } from '../../core/services/package.service';
 import { Delivery } from '../../core/models/delivery.model';
 import { TableModule } from 'primeng/table';
 import { AuthService } from '../../core/services/auth.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -24,11 +24,25 @@ export class AdminComponent implements OnInit {
   deliveries: Delivery[] = [];
   markers: { [id: number]: L.Marker } = {};
 
-  // Modal
   modalVisible = false;
   selectedDelivery: Delivery | null = null;
   paquetesSinAsignar: any[] = [];
   selectedPackageId: number | null = null;
+
+  // Icono estilo pin azul
+  private defaultIcon = L.icon({
+    iconUrl:
+      'data:image/svg+xml;base64,' +
+      btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
+          <path d="M16 0C10 0 6 6 6 12c0 6 10 18 10 18s10-12 10-18c0-6-4-12-10-12z" fill="#007bff"/>
+          <circle cx="16" cy="12" r="5" fill="white"/>
+        </svg>
+      `),
+    iconSize: [32, 42],
+    iconAnchor: [16, 42],
+    popupAnchor: [0, -42],
+  });
 
   constructor(
     private deliveryService: DeliveryService,
@@ -40,8 +54,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
     this.loadDeliveries();
-
-    setInterval(() => this.loadDeliveries(), 5000); // actualizar cada 5s
+    setInterval(() => this.loadDeliveries(), 5000);
   }
 
   initMap(): void {
@@ -61,14 +74,13 @@ export class AdminComponent implements OnInit {
 
       data.forEach((delivery) => {
         const { id, lat, lng, username, status } = delivery;
-
-        const existingMarker = this.markers[id];
         const position = L.latLng(lat, lng);
+        const existingMarker = this.markers[id];
 
         if (existingMarker) {
           existingMarker.setLatLng(position);
         } else {
-          const marker = L.marker(position)
+          const marker = L.marker(position, { icon: this.defaultIcon })
             .addTo(this.map!)
             .bindPopup(`<b>${username}</b><br>Status: ${status}`);
           this.markers[id] = marker;
@@ -85,11 +97,15 @@ export class AdminComponent implements OnInit {
   }
 
   loadPaquetesSinAsignar(): void {
-    this.packageService.getPaquetesSinAsignar().subscribe({
-      next: (paquetes) => (this.paquetesSinAsignar = paquetes),
-      error: (err) => console.error('Error cargando paquetes sin asignar', err),
-    });
-  }
+  this.packageService.getPaquetesSinAsignar().subscribe({
+    next: (paquetes) => {
+      console.log('Paquetes sin asignar:', paquetes);
+      this.paquetesSinAsignar = paquetes;
+    },
+    error: (err) => console.error('Error cargando paquetes sin asignar', err),
+  });
+}
+
 
   asignarPaquete(): void {
     if (!this.selectedPackageId || !this.selectedDelivery) return;

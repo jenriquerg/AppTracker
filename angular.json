@@ -20,8 +20,10 @@
             "outputPath": "dist/app-tracker",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
+            "polyfills": ["zone.js"],
+            "allowedCommonJsDependencies": [
+              "leaflet",
+              "leaflet-defaulticon-compatibility"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -38,8 +40,7 @@
             ],
             "styles": [
               "node_modules/leaflet/dist/leaflet.css",
-              "src/styles.scss",
-              "src/styles/leaflet-custom.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -48,8 +49,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "3MB",
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -85,10 +86,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [

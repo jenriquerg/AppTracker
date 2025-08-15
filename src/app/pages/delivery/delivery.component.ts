@@ -5,10 +5,7 @@ import { TokenService } from '../../core/services/token.service';
 import { AuthService } from '../../core/services/auth.service';
 import * as L from 'leaflet';
 import * as socketIOClient from 'socket.io-client';
-import 'leaflet-defaulticon-compatibility';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-import 'leaflet/dist/leaflet.css';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delivery',
@@ -24,6 +21,24 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   private map!: L.Map;
   private marker!: L.Marker;
   private intervalId: any;
+  private watchId: number | null = null;
+  private ultimaLat: number | null = null;
+  private ultimaLng: number | null = null;
+  private socket: any;
+
+  private defaultIcon = L.icon({
+    iconUrl:
+      'data:image/svg+xml;base64,' +
+      btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
+          <path d="M16 0C10 0 6 6 6 12c0 6 10 18 10 18s10-12 10-18c0-6-4-12-10-12z" fill="#dc3545"/>
+          <circle cx="16" cy="12" r="5" fill="white"/>
+        </svg>
+      `),
+    iconSize: [32, 42],
+    iconAnchor: [16, 42],
+    popupAnchor: [0, -42],
+  });
 
   constructor(
     private packageService: PackageService,
@@ -47,11 +62,8 @@ export class DeliveryComponent implements OnInit, OnDestroy {
 
   inicializarMapa() {
     this.map = L.map('map').setView([19.4326, -99.1332], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(
-      this.map
-    );
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
   }
-  private socket: any;
 
   inicializarSocket() {
     const ioFunc = (socketIOClient as any).default ?? socketIOClient;
@@ -71,10 +83,6 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     });
   }
 
-  private watchId: number | null = null;
-  private ultimaLat: number | null = null;
-  private ultimaLng: number | null = null;
-
   compartirUbicacionCada10Segundos() {
     if (!navigator.geolocation) {
       alert('Geolocalización no soportada.');
@@ -86,7 +94,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
       this.ultimaLng = lng;
 
       if (!this.marker) {
-        this.marker = L.marker([lat, lng]).addTo(this.map);
+        this.marker = L.marker([lat, lng], { icon: this.defaultIcon }).addTo(this.map);
         this.map.setView([lat, lng], 15);
       } else {
         this.marker.setLatLng([lat, lng]);
@@ -98,14 +106,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
       }
     };
 
-    // Usar watchPosition para obtener actualización continua
     this.watchId = navigator.geolocation.watchPosition(
       (pos) => enviarUbicacion(pos.coords.latitude, pos.coords.longitude),
       (err) => console.error('Error al rastrear ubicación:', err),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
     );
 
-    // Refuerzo con setInterval por si no hay cambios
     this.intervalId = setInterval(() => {
       if (this.ultimaLat !== null && this.ultimaLng !== null) {
         enviarUbicacion(this.ultimaLat, this.ultimaLng);
