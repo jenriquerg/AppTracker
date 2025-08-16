@@ -1,3 +1,4 @@
+// package.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class PackageService {
-  private api = 'http://localhost:3000/api/packages';
+  private api = '/api/packages'; // ✅ URL relativa
 
   constructor(private http: HttpClient) {}
 
